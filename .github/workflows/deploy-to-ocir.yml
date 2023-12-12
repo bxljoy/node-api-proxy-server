@@ -1,0 +1,26 @@
+name: Deploy to OCIR
+
+on:
+  push:
+    branches:
+      #   - main # Set the branch on which the action should run
+      - feature
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Oracle Cloud Infrastructure Registry
+        uses: docker/login-action@v1
+        with:
+          registry: <region-key>.ocir.io # Replace with your OCIR region key
+          username: ${{ secrets.OCIR_USERNAME }}
+          password: ${{ secrets.OCIR_PASSWORD }}
+
+      - name: Build and Push Docker image
+        run: |
+          docker build -t <region-key>.ocir.io/<tenancy-name>/<repo-name>:<tag> .
+          docker push <region-key>.ocir.io/<tenancy-name>/<repo-name>:<tag>

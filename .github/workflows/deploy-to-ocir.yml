@@ -18,13 +18,26 @@ jobs:
       - name: Install npm dependencies
         run: |
           npm install
-      - name: Executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@master
+      # - name: Executing remote ssh commands using ssh key
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.OCIR_HOST }}
+      #     username: ${{ secrets.OCIR_USERNAME }}
+      #     key: ${{ secrets.OCIR_SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd /home/ubuntu/node-api-proxy-server;
+      #       git pull;
+      #       npm install;
+      #       pm2 restart all;
+
+      - name: Deploy to OCIR
+        uses: GPTED/SSH-My-Action@0.1
         with:
-          host: ${{ secrets.OCIR_HOST }}
-          username: ${{ secrets.OCIR_USERNAME }}
-          key: ${{ secrets.OCIR_SSH_PRIVATE_KEY }}
-          script: |
+          HOST: ${{ secrets.OCIR_HOST }}
+          USER: ${{ secrets.OCIR_USERNAME }}
+          PRIVATE_KEY: ${{ secrets.OCIR_SSH_PRIVATE_KEY }}
+          PORT: 22
+          CMD: |
             cd /home/ubuntu/node-api-proxy-server;
             git pull;
             npm install;

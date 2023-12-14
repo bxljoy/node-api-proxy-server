@@ -3,7 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import openWeatherRoutes from './routes/openWeather.js';
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4001;
 const app = express();
 
 app.use(cors());
